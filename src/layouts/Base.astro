@@ -1,0 +1,47 @@
+---
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/700.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import { siteMeta } from '../data/site';
+
+const { title = siteMeta.name, description = siteMeta.description } = Astro.props;
+const pageTitle = title === siteMeta.name ? title : `${title} | ${siteMeta.name}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="page-frame">
+      <Nav currentPath={Astro.url.pathname} />
+      <main class="page-shell">
+        <slot />
+      </main>
+    </div>
+    <script>
+      (() => {
+        const anchors = document.querySelectorAll('a[href]');
+        anchors.forEach((anchor) => {
+          const href = anchor.getAttribute('href');
+          if (!href || href.startsWith('/') || href.startsWith('#') || href.startsWith('mailto:')) {
+            return;
+          }
+          if (!anchor.hasAttribute('target')) {
+            anchor.setAttribute('target', '_blank');
+            anchor.setAttribute('rel', 'noreferrer noopener');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

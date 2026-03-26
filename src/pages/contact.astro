@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { contactEmails } from '../data/site';
+---
+
+<Base title="contact">
+  <section class="simple-page simple-page-contact">
+    <ul class="contact-links">
+      {contactEmails.map((email) => (
+        <li>
+          <a href={`mailto:${email}`}>
+            <strong>{email}</strong>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import { projects } from '../data/site';
+---
+
+<Base title="events & projects">
+  <section class="artists-page events-page">
+    <div class="artist-browser" data-project-browser>
+      <ul class="artist-list" aria-label="events and projects list">
+        {projects.map((project) => (
+          <li>
+            <button
+              type="button"
+              class="artist-trigger"
+              data-project-trigger={project.title}
+              aria-pressed="false"
+            >
+              {project.title}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div class="artist-panels">
+        {projects.map((project) => (
+          <article
+            class="artist-panel"
+            data-project-panel={project.title}
+            hidden
+          >
+            <div class="artist-head">
+              <div>
+                <h2>{project.title}</h2>
+                <p class="micro-label">{project.category} / {project.year}</p>
+              </div>
+            </div>
+
+            <div class="artist-panel-copy">
+              <div class="artist-panel-text">
+                <p>{project.text}</p>
+
+                <div class="artist-links-row">
+                  {project.links?.map((item) => (
+                    <a href="#">{item}</a>
+                  ))}
+                  {project.link && project.linkLabel ? <a href={project.link}>{project.linkLabel}</a> : null}
+                </div>
+              </div>
+
+              <div class="artist-panel-mockup">
+                {project.images ? <img src={project.images[0]} alt={`${project.title} mockup`} /> : null}
+              </div>
+            </div>
+
+            <div class="artist-gallery" aria-hidden="true">
+              {project.gallery?.map((tone, index) => (
+                <span class={`artist-image tone-${tone} image-${index + 1}`}></span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="artist-preview-stage" aria-hidden="true">
+        {projects.map((project, index) => (
+          <article
+            class="artist-preview-card"
+            data-project-preview={project.title}
+            data-preview-index={index + 1}
+            hidden
+          >
+            <div class="artist-preview-stack">
+              {project.gallery?.map((tone, toneIndex) => (
+                <span class={`artist-preview-sheet tone-${tone} preview-${toneIndex + 1}`}></span>
+              ))}
+            </div>
+            <p class="artist-preview-label">{project.title}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const browser = document.querySelector('[data-project-browser]');
+      const triggers = Array.from(document.querySelectorAll('[data-project-trigger]'));
+      const panels = Array.from(document.querySelectorAll('[data-project-panel]'));
+      const previews = Array.from(document.querySelectorAll('[data-project-preview]'));
+
+      function hasActiveDetail() {
+        return Boolean(browser?.classList.contains('has-active-detail'));
+      }
+
+      function showPreview(name) {
+        if (hasActiveDetail()) {
+          return;
+        }
+
+        triggers.forEach((trigger) => {
+          const isPreviewed = trigger.getAttribute('data-project-trigger') === name;
+          trigger.classList.toggle('is-previewed', isPreviewed);
+        });
+
+        previews.forEach((preview) => {
+          const isVisible = preview.getAttribute('data-project-preview') === name;
+          preview.toggleAttribute('hidden', !isVisible);
+          preview.classList.toggle('is-visible', isVisible);
+        });
+      }
+
+      function hidePreview() {
+        if (hasActiveDetail()) {
+          return;
+        }
+
+        triggers.forEach((trigger) => trigger.classList.remove('is-previewed'));
+        previews.forEach((preview) => {
+          preview.setAttribute('hidden', 'true');
+          preview.classList.remove('is-visible');
+        });
+      }
+
+      function showProject(name) {
+        if (browser) {
+          browser.classList.add('has-active-detail');
+        }
+
+        previews.forEach((preview) => {
+          preview.setAttribute('hidden', 'true');
+          preview.classList.remove('is-visible');
+        });
+
+        triggers.forEach((trigger) => {
+          const isActive = trigger.getAttribute('data-project-trigger') === name;
+          trigger.classList.toggle('is-active', isActive);
+          trigger.classList.remove('is-previewed');
+          trigger.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        panels.forEach((panel) => {
+          const isActive = panel.getAttribute('data-project-panel') === name;
+          panel.toggleAttribute('hidden', !isActive);
+          panel.classList.toggle('is-visible', isActive);
+        });
+      }
+
+      triggers.forEach((trigger) => {
+        trigger.addEventListener('mouseenter', () => {
+          const name = trigger.getAttribute('data-project-trigger');
+          if (name) {
+            showPreview(name);
+          }
+        });
+
+        trigger.addEventListener('focus', () => {
+          const name = trigger.getAttribute('data-project-trigger');
+          if (name) {
+            showPreview(name);
+          }
+        });
+
+        trigger.addEventListener('mouseleave', () => {
+          hidePreview();
+        });
+
+        trigger.addEventListener('blur', () => {
+          hidePreview();
+        });
+
+        trigger.addEventListener('click', () => {
+          const name = trigger.getAttribute('data-project-trigger');
+          if (name) {
+            hidePreview();
+            showProject(name);
+          }
+        });
+      });
+    })();
+  </script>
+</Base>

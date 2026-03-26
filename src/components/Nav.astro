@@ -1,0 +1,25 @@
+---
+import { navLinks, siteMeta } from '../data/site';
+
+const { currentPath = '/' } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="header-shell">
+    <a class="brand" href="/">{siteMeta.name}</a>
+    <nav aria-label="main navigation" class="site-nav">
+      <ul>
+        {navLinks.map((link) => {
+          const isActive = currentPath === link.href;
+          return (
+            <li>
+              <a href={link.href} class={isActive ? 'is-active' : undefined} aria-current={isActive ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
+</header>

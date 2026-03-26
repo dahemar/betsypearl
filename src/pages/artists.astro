@@ -1,0 +1,190 @@
+---
+import Base from '../layouts/Base.astro';
+import { artists } from '../data/site';
+---
+
+<Base title="artists">
+  <section class="artists-page">
+    <div class="artist-browser" data-artist-browser>
+      <ul class="artist-list" aria-label="artist list">
+        {artists.map((artist) => (
+          <li>
+            <button
+              type="button"
+              class="artist-trigger"
+              data-artist-trigger={artist.name}
+              aria-pressed="false"
+            >
+              {artist.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div class="artist-panels">
+        {artists.map((artist) => (
+          <article
+            class="artist-panel"
+            data-artist-panel={artist.name}
+            hidden
+          >
+            <div class="artist-head">
+              <div>
+                <h2>{artist.name}</h2>
+                <p class="micro-label">{artist.location}</p>
+              </div>
+            </div>
+
+            <div class="artist-panel-copy">
+              <div class="artist-panel-text">
+                <p>{artist.text}</p>
+
+                {artist.recentGigs ? (
+                  <div class="recent-gigs">
+                    <h4>recent gigs</h4>
+                    <ul>
+                      {artist.recentGigs.map((g) => (
+                        <li>{g}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                <div class="artist-links-row">
+                  {artist.links.map((item) => (
+                    <a href="#">{item}</a>
+                  ))}
+                </div>
+              </div>
+
+              <div class="artist-panel-mockup">
+                {artist.mockup ? <img src={artist.mockup} alt={`${artist.name} mockup`} /> : artist.images ? <img src={artist.images[0]} alt={`${artist.name} image`} /> : null}
+              </div>
+            </div>
+
+            <div class="artist-gallery" aria-hidden="true">
+              {artist.gallery.map((tone, index) => (
+                <span class={`artist-image tone-${tone} image-${index + 1}`}></span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="artist-preview-stage" aria-hidden="true">
+        {artists.map((artist, index) => (
+          <article
+            class="artist-preview-card"
+            data-artist-preview={artist.name}
+            data-preview-index={index + 1}
+            hidden
+          >
+            <div class="artist-preview-stack">
+              {artist.gallery.map((tone, toneIndex) => (
+                <span class={`artist-preview-sheet tone-${tone} preview-${toneIndex + 1}`}></span>
+              ))}
+            </div>
+            <p class="artist-preview-label">{artist.name}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const browser = document.querySelector('[data-artist-browser]');
+      const triggers = Array.from(document.querySelectorAll('[data-artist-trigger]'));
+      const panels = Array.from(document.querySelectorAll('[data-artist-panel]'));
+      const previews = Array.from(document.querySelectorAll('[data-artist-preview]'));
+
+      function hasActiveDetail() {
+        return Boolean(browser?.classList.contains('has-active-detail'));
+      }
+
+      function showPreview(name) {
+        if (hasActiveDetail()) {
+          return;
+        }
+
+        triggers.forEach((trigger) => {
+          const isPreviewed = trigger.getAttribute('data-artist-trigger') === name;
+          trigger.classList.toggle('is-previewed', isPreviewed);
+        });
+
+        previews.forEach((preview) => {
+          const isVisible = preview.getAttribute('data-artist-preview') === name;
+          preview.toggleAttribute('hidden', !isVisible);
+          preview.classList.toggle('is-visible', isVisible);
+        });
+      }
+
+      function hidePreview() {
+        if (hasActiveDetail()) {
+          return;
+        }
+
+        triggers.forEach((trigger) => trigger.classList.remove('is-previewed'));
+        previews.forEach((preview) => {
+          preview.setAttribute('hidden', 'true');
+          preview.classList.remove('is-visible');
+        });
+      }
+
+      function showArtist(name) {
+        if (browser) {
+          browser.classList.add('has-active-detail');
+        }
+
+        previews.forEach((preview) => {
+          preview.setAttribute('hidden', 'true');
+          preview.classList.remove('is-visible');
+        });
+
+        triggers.forEach((trigger) => {
+          const isActive = trigger.getAttribute('data-artist-trigger') === name;
+          trigger.classList.toggle('is-active', isActive);
+          trigger.classList.remove('is-previewed');
+          trigger.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        panels.forEach((panel) => {
+          const isActive = panel.getAttribute('data-artist-panel') === name;
+          panel.toggleAttribute('hidden', !isActive);
+          panel.classList.toggle('is-visible', isActive);
+        });
+      }
+
+      triggers.forEach((trigger) => {
+        trigger.addEventListener('mouseenter', () => {
+          const name = trigger.getAttribute('data-artist-trigger');
+          if (name) {
+            showPreview(name);
+          }
+        });
+
+        trigger.addEventListener('focus', () => {
+          const name = trigger.getAttribute('data-artist-trigger');
+          if (name) {
+            showPreview(name);
+          }
+        });
+
+        trigger.addEventListener('mouseleave', () => {
+          hidePreview();
+        });
+
+        trigger.addEventListener('blur', () => {
+          hidePreview();
+        });
+
+        trigger.addEventListener('click', () => {
+          const name = trigger.getAttribute('data-artist-trigger');
+          if (name) {
+            hidePreview();
+            showArtist(name);
+          }
+        });
+      });
+    })();
+  </script>
+</Base>
