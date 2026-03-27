@@ -139,8 +139,8 @@ export const artists: Artist[] = [
       'contact',
     ],
     gallery: ['soft', 'paper', 'ink'],
-      mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.01.jpeg',
-      recentGigs: ['Le Poisson Rouge — 2026-02-12', 'La Gaîté Lyrique — 2025-11-05', 'Cafe Oto — 2025-06-21'],
+        mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.01.jpeg',
+        recentGigs: ['Venue 1', 'Venue 2', 'Venue 3'],
   },
   {
     name: 'artist 2',
@@ -155,8 +155,8 @@ export const artists: Artist[] = [
       'contact',
     ],
     gallery: ['warm', 'ink', 'soft'],
-      mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.01 (1).jpeg',
-      recentGigs: ['Village Underground — 2026-01-18', 'Union Chapel — 2025-09-02', 'Camden Assembly — 2025-05-12'],
+        mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.01 (1).jpeg',
+        recentGigs: ['Venue 1', 'Venue 2', 'Venue 3'],
   },
   {
     name: 'artist 3',
@@ -167,8 +167,8 @@ export const artists: Artist[] = [
     images: ['/images/WhatsApp Image 2026-03-26 at 14.51.02 (3).jpeg', '/images/WhatsApp Image 2026-03-26 at 14.51.02.jpeg'],
     links: ['listen', 'website'],
     gallery: ['paper', 'bright', 'warm'],
-      mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02 (3).jpeg',
-      recentGigs: ['Ancienne Belgique — 2026-03-02', 'Ancienne Belgique — 2025-12-10', 'LaSemaine — 2025-07-19'],
+        mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02 (3).jpeg',
+        recentGigs: ['Venue 1', 'Venue 2', 'Venue 3'],
   },
   {
     name: 'artist 4',
@@ -179,8 +179,8 @@ export const artists: Artist[] = [
     images: ['/images/WhatsApp Image 2026-03-26 at 14.51.02 (2).jpeg', '/images/WhatsApp Image 2026-03-26 at 14.51.01.jpeg'],
     links: ['listen', 'contact'],
     gallery: ['ink', 'soft', 'paper'],
-      mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02 (2).jpeg',
-      recentGigs: ['Berghain Kantine — 2026-02-22', 'Elsewhere — 2025-10-03', 'Berghain — 2025-04-17'],
+        mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02 (2).jpeg',
+        recentGigs: ['Venue 1', 'Venue 2', 'Venue 3'],
   },
   {
     name: 'artist 5',
@@ -191,8 +191,8 @@ export const artists: Artist[] = [
     images: ['/images/WhatsApp Image 2026-03-26 at 14.51.02 (1).jpeg', '/images/WhatsApp Image 2026-03-26 at 14.51.02 (3).jpeg'],
     links: ['website', 'contact'],
     gallery: ['bright', 'warm', 'soft'],
-      mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02 (1).jpeg',
-      recentGigs: ['La Cigale — 2026-01-30', 'Roundhouse — 2025-08-11', 'Hero — 2025-03-27'],
+        mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02 (1).jpeg',
+        recentGigs: ['Venue 1', 'Venue 2', 'Venue 3'],
   },
   {
     name: 'artist 6',
@@ -203,8 +203,8 @@ export const artists: Artist[] = [
     images: ['/images/WhatsApp Image 2026-03-26 at 14.51.02.jpeg', '/images/WhatsApp Image 2026-03-26 at 14.51.01 (1).jpeg'],
     links: ['listen', 'website'],
     gallery: ['paper', 'ink', 'warm'],
-      mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02.jpeg',
-      recentGigs: ['Blue Note Milano — 2026-02-05', 'Arco — 2025-09-27', 'Milan Loft — 2025-05-08'],
+        mockup: '/images/WhatsApp Image 2026-03-26 at 14.51.02.jpeg',
+        recentGigs: ['Venue 1', 'Venue 2', 'Venue 3'],
   },
 ];
 
@@ -249,10 +249,8 @@ export const projects: Project[] = [
     role: 'event production and curation support',
     text:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.',
-    links: ['website', 'details'],
+    links: ['details'],
     gallery: ['bright', 'paper', 'warm'],
-    link: 'https://white-garden.fr',
-    linkLabel: 'visit white garden',
   },
   {
     title: 'poison gf',
