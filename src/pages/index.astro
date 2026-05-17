@@ -5,21 +5,43 @@ import { welcomeTiles } from '../data/site';
 
 <Base title="betsy pearl">
   <section class="home-scatter" aria-label="betsy pearl home links">
-    {welcomeTiles.map((tile) => (
-      <a
-        href={tile.href}
-        class={`scatter-card tone-${tile.tone}`}
-        data-kind={tile.kind}
-        style={`--x:${tile.x}; --y:${tile.y}; --rotate:${tile.rotate}; --w:${tile.width}; --h:${tile.height};`}
-        aria-label={tile.title}
-      >
-        {tile.image ? (
-          <img class="scatter-image" src={tile.image} alt="" loading="lazy" aria-hidden="true" />
-        ) : (
-          <span class="scatter-image" aria-hidden="true"></span>
-        )}
-        <span class="scatter-label">{tile.title}</span>
-      </a>
-    ))}
-  </section>
-</Base>
+      {welcomeTiles.map((tile) => {
+        if (tile.title === 'betsy pearl') {
+          return (
+            <div
+              class={`scatter-card tone-${tile.tone} logo-card`}
+              data-kind={tile.kind}
+              style={`--x:${tile.x}; --y:${tile.y}; --rotate:${tile.rotate}; --w:${tile.width}; --h:${tile.height};`}
+              aria-hidden="true"
+            >
+              {tile.image ? (
+                <img class="scatter-image" src={tile.image} alt="Betsy Pearl" loading="lazy" />
+              ) : (
+                <span class="scatter-image" aria-hidden="true"></span>
+              )}
+              <span class="scatter-label">{tile.title}</span>
+            </div>
+          );
+        }
+
+        return (
+          <a
+            href={tile.href}
+            class={`scatter-card tone-${tile.tone}`}
+            data-kind={tile.kind}
+            style={`--x:${tile.x}; --y:${tile.y}; --rotate:${tile.rotate}; --w:${tile.width}; --h:${tile.height};`}
+            aria-label={tile.title}
+            target={tile.kind === 'external' ? '_blank' : undefined}
+            rel={tile.kind === 'external' ? 'noopener' : undefined}
+          >
+            {tile.image ? (
+              <img class="scatter-image" src={tile.image} alt="" loading="lazy" aria-hidden="true" />
+            ) : (
+              <span class="scatter-image" aria-hidden="true"></span>
+            )}
+            <span class="scatter-label">{tile.title}</span>
+          </a>
+        );
+      })}
+    </section>
+  </Base>

@@ -11,6 +11,7 @@ import { navLinks, siteMeta } from '../data/site';
 
 const { title = siteMeta.name, description = siteMeta.description } = Astro.props;
 const pageTitle = title === siteMeta.name ? title : `${title} | ${siteMeta.name}`;
+const showNav = Astro.url?.pathname !== '/';
 ---
 
 <!doctype html>
@@ -31,7 +32,7 @@ const pageTitle = title === siteMeta.name ? title : `${title} | ${siteMeta.name}
   </head>
   <body>
     <div class="page-frame">
-      <Nav currentPath={Astro.url.pathname} />
+      {showNav ? <Nav currentPath={Astro.url.pathname} /> : null}
       <main class="page-shell">
         <slot />
       </main>

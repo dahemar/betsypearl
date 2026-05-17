@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { projects, artists } from '../data/site';
+
+const pool: string[] = [];
+for (const p of projects) {
+  if (p.images) pool.push(...p.images);
+}
+for (const a of artists) {
+  if (a.images) pool.push(...a.images);
+}
+
+const seen = new Set<string>();
+const visualsImages = pool.filter((src) => {
+  if (seen.has(src)) return false;
+  seen.add(src);
+  return true;
+}).slice(0, 7);
+
+/** Latency-style journal rows: max 2 per line (35% + 55%), top/bottom stagger */
+type JournalOrient = 'landscape' | 'portrait' | 'square';
+type JournalSize = 'xs' | 'lg';
+type JournalAlign = 'top' | 'bottom';
+
+const journalLayout: { size: JournalSize; orient: JournalOrient; align: JournalAlign }[] = [
+  { size: 'xs', orient: 'portrait', align: 'top' },
+  { size: 'lg', orient: 'landscape', align: 'bottom' },
+  { size: 'lg', orient: 'landscape', align: 'top' },
+  { size: 'xs', orient: 'portrait', align: 'bottom' },
+  { size: 'xs', orient: 'square', align: 'top' },
+  { size: 'lg', orient: 'portrait', align: 'bottom' },
+  { size: 'lg', orient: 'portrait', align: 'top' },
+  { size: 'xs', orient: 'square', align: 'bottom' },
+];
+
+const mobileAspect: Record<JournalOrient, string> = {
+  landscape: '16 / 9',
+  portrait: '3 / 4',
+  square: '1 / 1',
+};
+---
+
+<Base title="Visuals - betsy pearl">
+  <section class="visuals-journal" aria-label="Visuals gallery">
+    {visualsImages.map((src, i) => {
+      const slot = journalLayout[i] ?? journalLayout[journalLayout.length - 1];
+      return (
+        <div
+          class={`visuals-item ${slot.size} ${slot.orient} ${slot.align}`}
+          style={`--ar:${mobileAspect[slot.orient]};`}
+        >
+          <div class="visuals-item-image">
+            <img
+              src={src}
+              alt={`visual ${i + 1}`}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </div>
+        </div>
+      );
+    })}
+  </section>
+</Base>
