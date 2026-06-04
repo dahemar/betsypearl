@@ -1,12 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
-import { projects } from '../data/site';
+import { getSiteData } from '../lib/cms/getSite';
+
+const { projects } = await getSiteData(Astro.locals);
 ---
 
 <Base title="portfolio">
   <section class="artists-page events-page">
     <div class="artist-browser" data-project-browser>
-      <ul class="artist-list" aria-label="events and projects list">
+      <ul class="artist-list" aria-label="portfolio list">
         {projects.map((project) => (
           <li>
             <button
@@ -31,29 +33,22 @@ import { projects } from '../data/site';
             <div class="artist-head">
               <div>
                 <h2>{project.title}</h2>
-                <p class="micro-label">{project.category} / {project.year}</p>
+                {project.subtitle ? <p class="micro-label">{project.subtitle}</p> : null}
               </div>
             </div>
 
             <div class="artist-panel-copy">
               <div class="artist-panel-text">
                 <p>{project.text}</p>
-
-                <div class="artist-links-row">
-                  {project.links?.map((item) => (
-                    <a href="#">{item}</a>
-                  ))}
-                  {project.link && project.linkLabel ? <a href={project.link}>{project.linkLabel}</a> : null}
-                </div>
               </div>
 
               <div class="artist-panel-mockup">
-                {project.images ? <img src={project.images[0]} alt={`${project.title} mockup`} /> : null}
+                {project.image ? <img src={project.image} alt={`${project.title} image`} /> : null}
               </div>
             </div>
 
             <div class="artist-gallery" aria-hidden="true">
-              {project.gallery?.map((tone, index) => (
+              {project.gallery.map((tone, index) => (
                 <span class={`artist-image tone-${tone} image-${index + 1}`}></span>
               ))}
             </div>
@@ -69,7 +64,7 @@ import { projects } from '../data/site';
             hidden
           >
             <div class="artist-preview-stack">
-              {project.gallery?.map((tone, toneIndex) => (
+              {project.gallery.map((tone, toneIndex) => (
                 <span class={`artist-preview-sheet tone-${tone} preview-${toneIndex + 1}`}></span>
               ))}
             </div>

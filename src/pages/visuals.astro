@@ -1,39 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import { projects, artists } from '../data/site';
+import { VISUAL_JOURNAL_LAYOUT } from '../data/layout';
+import { getSiteData } from '../lib/cms/getSite';
 
-const pool: string[] = [];
-for (const p of projects) {
-  if (p.images) pool.push(...p.images);
-}
-for (const a of artists) {
-  if (a.images) pool.push(...a.images);
-}
+const { visualImages } = await getSiteData(Astro.locals);
 
-const seen = new Set<string>();
-const visualsImages = pool.filter((src) => {
-  if (seen.has(src)) return false;
-  seen.add(src);
-  return true;
-}).slice(0, 7);
-
-/** Latency-style journal rows: max 2 per line (35% + 55%), top/bottom stagger */
-type JournalOrient = 'landscape' | 'portrait' | 'square';
-type JournalSize = 'xs' | 'lg';
-type JournalAlign = 'top' | 'bottom';
-
-const journalLayout: { size: JournalSize; orient: JournalOrient; align: JournalAlign }[] = [
-  { size: 'xs', orient: 'portrait', align: 'top' },
-  { size: 'lg', orient: 'landscape', align: 'bottom' },
-  { size: 'lg', orient: 'landscape', align: 'top' },
-  { size: 'xs', orient: 'portrait', align: 'bottom' },
-  { size: 'xs', orient: 'square', align: 'top' },
-  { size: 'lg', orient: 'portrait', align: 'bottom' },
-  { size: 'lg', orient: 'portrait', align: 'top' },
-  { size: 'xs', orient: 'square', align: 'bottom' },
-];
-
-const mobileAspect: Record<JournalOrient, string> = {
+const mobileAspect: Record<string, string> = {
   landscape: '16 / 9',
   portrait: '3 / 4',
   square: '1 / 1',
@@ -42,8 +14,8 @@ const mobileAspect: Record<JournalOrient, string> = {
 
 <Base title="Visuals - betsy pearl">
   <section class="visuals-journal" aria-label="Visuals gallery">
-    {visualsImages.map((src, i) => {
-      const slot = journalLayout[i] ?? journalLayout[journalLayout.length - 1];
+    {visualImages.map((src, i) => {
+      const slot = VISUAL_JOURNAL_LAYOUT[i] ?? VISUAL_JOURNAL_LAYOUT[VISUAL_JOURNAL_LAYOUT.length - 1];
       return (
         <div
           class={`visuals-item ${slot.size} ${slot.orient} ${slot.align}`}

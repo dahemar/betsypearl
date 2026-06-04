@@ -7,7 +7,10 @@ import manrope500Woff2 from '@fontsource/manrope/files/manrope-latin-500-normal.
 import ibmPlexMono400Woff2 from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
-import { navLinks, siteMeta } from '../data/site';
+import { getSiteData } from '../lib/cms/getSite';
+
+const site = await getSiteData(Astro.locals);
+const { siteMeta, navLinks } = site;
 
 const { title = siteMeta.name, description = siteMeta.description } = Astro.props;
 const pageTitle = title === siteMeta.name ? title : `${title} | ${siteMeta.name}`;
@@ -32,7 +35,7 @@ const showNav = Astro.url?.pathname !== '/';
   </head>
   <body>
     <div class="page-frame">
-      {showNav ? <Nav currentPath={Astro.url.pathname} /> : null}
+      {showNav ? <Nav currentPath={Astro.url.pathname} navLinks={navLinks} siteMeta={siteMeta} /> : null}
       <main class="page-shell">
         <slot />
       </main>

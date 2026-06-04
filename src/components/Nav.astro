@@ -1,7 +1,15 @@
 ---
-import { navLinks, siteMeta } from '../data/site';
+import type { NavLink, SiteMeta } from '../data/site';
 
-const { currentPath = '/' } = Astro.props;
+const {
+  currentPath = '/',
+  navLinks = [],
+  siteMeta = { name: 'betsy pearl', description: '' },
+} = Astro.props as {
+  currentPath?: string;
+  navLinks?: NavLink[];
+  siteMeta?: SiteMeta;
+};
 ---
 
 <header class="site-header">

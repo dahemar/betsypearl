@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { welcomeTiles } from '../data/site';
+import { getSiteData } from '../lib/cms/getSite';
+
+const { welcomeTiles } = await getSiteData(Astro.locals);
 ---
 
 <Base title="betsy pearl">

@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { contactEmails } from '../data/site';
+import { getSiteData } from '../lib/cms/getSite';
+
+const { contactEmails } = await getSiteData(Astro.locals);
 ---
 
 <Base title="contact">
